@@ -3,8 +3,8 @@ import requests,json,os,pickle,time # type: ignore
 
 class MefrpClient:
     def __init__(self,token=""):
-        #´´½¨Ò»¸öÃûÎªconfigµÄÎÄ¼ş¼Ğ£¬
-        #ÓÃÓÚ´¢´æÅäÖÃ
+        #åˆ›å»ºä¸€ä¸ªåä¸ºconfigçš„æ–‡ä»¶å¤¹ï¼Œ
+        #ç”¨äºå‚¨å­˜é…ç½®
         try:
             os.mkdir("config")
         except Exception:
@@ -19,8 +19,8 @@ class MefrpClient:
 
 
     def login(self,username:str,password:str,headers:dict=False):
-        #È·ÈÏÓÃ»§µÇÂ¼ĞÅÏ¢£¬
-        #²¢·µ»ØÈ·ÈÏÂëºÍÓÃ»§token
+        #ç¡®è®¤ç”¨æˆ·ç™»å½•ä¿¡æ¯ï¼Œ
+        #å¹¶è¿”å›ç¡®è®¤ç å’Œç”¨æˆ·token
         data={
             "username":username,
             "password":password,
@@ -36,13 +36,13 @@ class MefrpClient:
 
 
     def save_data(self,data:dict,method:str="chenge"):
-        #ÓÃpickle,bugÉÙ
-        #ÓÃÓÚ´¢´æÊı¾İ£¬
-        #data¸ñÊ½Îªdict£¬
-        #method¹²ÓĞÁ½ÖÖÄ£Ê½£¬
-        #¡°chenge¡±ºÍ¡°rewrite¡±£¬
-        #·Ö±ğ±íÊ¾ĞÂ¼ÓÈë»òÕß¸²¸ÇËùÓĞÅäÖÃ£¬
-        #È»ºóÖØĞ´
+        #ç”¨pickle,bugå°‘
+        #ç”¨äºå‚¨å­˜æ•°æ®ï¼Œ
+        #dataæ ¼å¼ä¸ºdictï¼Œ
+        #methodå…±æœ‰ä¸¤ç§æ¨¡å¼ï¼Œ
+        #â€œchengeâ€å’Œâ€œrewriteâ€ï¼Œ
+        #åˆ†åˆ«è¡¨ç¤ºæ–°åŠ å…¥æˆ–è€…è¦†ç›–æ‰€æœ‰é…ç½®ï¼Œ
+        #ç„¶åé‡å†™
 
 
         if method=="chenge":
@@ -88,8 +88,8 @@ class MefrpClient:
 
 
     def read_data(self):
-        #ÓÃÓÚ¶ÁÈ¡ÒÑ¾­Ğ´ºÃµÄÅäÖÃÎÄ¼ş£¬
-        #json·µ»Ø
+        #ç”¨äºè¯»å–å·²ç»å†™å¥½çš„é…ç½®æ–‡ä»¶ï¼Œ
+        #jsonè¿”å›
         with (open(os.path.join(os.getcwd()+"\\config","global.json")),"r") as file:
                 data=json.loads(file.read(7500))
                 file.close()
@@ -97,7 +97,7 @@ class MefrpClient:
 
     
     def get_info(self,token:str=""):
-        #»ñÈ¡mefrpÓÃ»§ĞÅÏ¢
+        #è·å–mefrpç”¨æˆ·ä¿¡æ¯
         if not token:
             token=self.token
         header={
@@ -108,7 +108,7 @@ class MefrpClient:
 
 
     def get_ad(self,token:str=""):
-        #»ñÈ¡¹Ù·½¹ã¸æ
+        #è·å–å®˜æ–¹å¹¿å‘Š
         if not token:
             token=self.token
         header={
@@ -119,7 +119,7 @@ class MefrpClient:
 
 
     def get_notice(self,token:str=""):
-        #»ñÈ¡¹«¸æ
+        #è·å–å…¬å‘Š
         if not token:
             token=self.token
         header={
@@ -130,7 +130,7 @@ class MefrpClient:
 
 
     def sign(self,token:str=""):
-        #ÓÃ»§Ç©µ½
+        #ç”¨æˆ·ç­¾åˆ°
         if not token:
             token=self.token
         header={
@@ -141,7 +141,7 @@ class MefrpClient:
 
 
     def node_list(self,token:str=""):
-        #»ñÈ¡½ÚµãÁĞ±í
+        #è·å–èŠ‚ç‚¹åˆ—è¡¨
         if not token:
             token=self.token
         header={
@@ -152,9 +152,9 @@ class MefrpClient:
 
 
     def add_proxy(self,data:dict,token:str=""):
-        #Ìí¼ÓËíµÀ
-        #dataÀàĞÍÎªdict£¬°üº¬accesskey(¿ÉÑ¡)£¬domain(¿ÉÑ¡)£¬headerXFromWhere(¿ÉÑ¡)£¬hostHeaderRewrite(¿ÉÑ¡)£¬proxyProtocolVersion(¿ÉÑ¡£©
-        #±ØÌîÏî£ºlocalIp(±¾µØip)£¬localPort(±¾µØ¶Ë¿Ú)£¬nodeId(½Úµãid),proxyName(ËíµÀÃû³Æ),proxyType(ËíµÀĞ­Òé£¬Èçudp£¬tcp£¬http£¬https)£¬remotePort(ÍâÍø¶Ë¿Ú)£¬useCompression(Ê¹ÓÃÑ¹Ëõ)£¬useEncryption(Ê¹ÓÃ¼ÓÃÜ)
+        #æ·»åŠ éš§é“
+        #dataç±»å‹ä¸ºdictï¼ŒåŒ…å«accesskey(å¯é€‰)ï¼Œdomain(å¯é€‰)ï¼ŒheaderXFromWhere(å¯é€‰)ï¼ŒhostHeaderRewrite(å¯é€‰)ï¼ŒproxyProtocolVersion(å¯é€‰ï¼‰
+        #å¿…å¡«é¡¹ï¼šlocalIp(æœ¬åœ°ip)ï¼ŒlocalPort(æœ¬åœ°ç«¯å£)ï¼ŒnodeId(èŠ‚ç‚¹id),proxyName(éš§é“åç§°),proxyType(éš§é“åè®®ï¼Œå¦‚udpï¼Œtcpï¼Œhttpï¼Œhttps)ï¼ŒremotePort(å¤–ç½‘ç«¯å£)ï¼ŒuseCompression(ä½¿ç”¨å‹ç¼©)ï¼ŒuseEncryption(ä½¿ç”¨åŠ å¯†)
 
         if not token:
             token=self.token
@@ -166,7 +166,7 @@ class MefrpClient:
     
 
     def get_free_port(self,NodeId,protocol,token:str=""):
-        #»ñÈ¡½Úµã¿ÕÏĞ¶Ë¿Ú£¬NodeIdÊÇ½Úµã±àºÅ£¬protocolÊÇĞ­Òé(Èçtcp£¬udp)
+        #è·å–èŠ‚ç‚¹ç©ºé—²ç«¯å£ï¼ŒNodeIdæ˜¯èŠ‚ç‚¹ç¼–å·ï¼Œprotocolæ˜¯åè®®(å¦‚tcpï¼Œudp)
 
         if not token:
             token=self.token
@@ -181,14 +181,14 @@ class MefrpClient:
         return json.loads(response.text)
 
     def set_token(self,token:str):
-        #ÊÖ¶¯¸ü¸Ä¶ÔÏóÖĞ´¢´æµÄtoken
+        #æ‰‹åŠ¨æ›´æ”¹å¯¹è±¡ä¸­å‚¨å­˜çš„token
         self.token=token
 
 
 
     def add_domain(self,domain:str,token:str=""):
-        #Ìí¼ÓÓòÃû
-        #ĞÎ²ÎdomainÎªÊ×¼¶ÓòÃû
+        #æ·»åŠ åŸŸå
+        #å½¢å‚domainä¸ºé¦–çº§åŸŸå
         if not token:
             token=self.token
         header={
@@ -202,8 +202,8 @@ class MefrpClient:
 
 
     def del_domain(self,domain:str,token:str=""):
-        #É¾³ıÓòÃû
-        #ĞÎ²ÎdomainÎªÊ×¼¶ÓòÃû
+        #åˆ é™¤åŸŸå
+        #å½¢å‚domainä¸ºé¦–çº§åŸŸå
         if not token:
             token=self.token
         header={
@@ -216,8 +216,8 @@ class MefrpClient:
         return json.loads(response.text)
 
     def list_domain(self,token:str=""):
-        #²éÑ¯ÓòÃûÁĞ±í
-        #ĞÎ²ÎdomainÎªÊ×¼¶ÓòÃû
+        #æŸ¥è¯¢åŸŸååˆ—è¡¨
+        #å½¢å‚domainä¸ºé¦–çº§åŸŸå
         if not token:
             token=self.token
         header={
@@ -227,7 +227,7 @@ class MefrpClient:
         return json.loads(response.text)
 
     def is_realname(self,token:str=""):
-        #²éÑ¯ÓÃ»§ÊÇ·ñÊµÃûÈÏÖ¤
+        #æŸ¥è¯¢ç”¨æˆ·æ˜¯å¦å®åè®¤è¯
         if not token:
             token=self.token
         header={
@@ -237,7 +237,7 @@ class MefrpClient:
         return json.loads(response.text)
 
     def token_reset(self,token:str=""):
-        #ÖØÖÃÓÃ»§token(É÷ÓÃ)
+        #é‡ç½®ç”¨æˆ·token(æ…ç”¨)
         if not token:
             token=self.token
         header={
@@ -249,11 +249,11 @@ class MefrpClient:
         return json.loads(response.text)
 
     def get_token(self):
-        #»ñÈ¡¶ÔÏóÖĞ´¢´æµÄtoken
+        #è·å–å¯¹è±¡ä¸­å‚¨å­˜çš„token
         return self.token
 
     def chenge_password(self,orginal:str,new:str,token:str=""):
-        #ÖØÖÃÓÃ»§ÃÜÂë£¬orginalÎªÔ­ÃÜÂë£¬newÎªĞÂÃÜÂë
+        #é‡ç½®ç”¨æˆ·å¯†ç ï¼Œorginalä¸ºåŸå¯†ç ï¼Œnewä¸ºæ–°å¯†ç 
         if not token:
             token=self.token
         header={
@@ -268,7 +268,7 @@ class MefrpClient:
 
 
     def kick(self,proxyId,token:str=""):
-        #Ç¿ÖÆÏÂÏßËíµÀ
+        #å¼ºåˆ¶ä¸‹çº¿éš§é“
         if not token:
             token=self.token
         header={
@@ -282,7 +282,7 @@ class MefrpClient:
 
 
     def proxy_list(self,token:str=""):
-        #ÁĞ³öÓÃ»§ÃûÏÂµÄËíµÀ
+        #åˆ—å‡ºç”¨æˆ·åä¸‹çš„éš§é“
         if not token:
             token=self.token
         header={
@@ -293,7 +293,7 @@ class MefrpClient:
 
 
     def update_proxy(self,data:dict,token:str=""):
-        #¸üĞÂËíµÀĞÅÏ¢£¬dataÊäÈë²Î¿¼Çë¿´add_proxyº¯Êı,»¹ÒªÁíÍâ¼ÓÈëproxyIdĞÎ²Î(×ÖµäÄÚ)
+        #æ›´æ–°éš§é“ä¿¡æ¯ï¼Œdataè¾“å…¥å‚è€ƒè¯·çœ‹add_proxyå‡½æ•°,è¿˜è¦å¦å¤–åŠ å…¥proxyIdå½¢å‚(å­—å…¸å†…)
         if not token:
             token=self.token
         header={
@@ -304,7 +304,7 @@ class MefrpClient:
 
 
     def toggle_proxy(self,proxyId:int,is_enable:bool,token:str=""):
-        #ÉèÖÃËíµÀµÄ×´Ì¬(ÆôÓÃ»òÕß½ûÓÃ)
+        #è®¾ç½®éš§é“çš„çŠ¶æ€(å¯ç”¨æˆ–è€…ç¦ç”¨)
         if not token:
             token=self.token
         header={
