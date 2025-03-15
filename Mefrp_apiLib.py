@@ -7,12 +7,12 @@ class MefrpClient:
         #用于储存配置
         try:
             os.mkdir("config")
-        except Exception:
+        except Exception as e:
             pass
-        if not os.path.exists(os.path.join(os.getcwd()+"\\config","global.json")):
-            with (open(os.path.join(os.getcwd()+"\\config","global.json")),"w") as file:
-                print("{}",file=file)
-                file.close()
+        #if not os.path.exists(os.path.join(os.getcwd()+"\\config","global.json")):
+            #with (open(os.path.join(os.getcwd()+"\\config","global.json")),"w+") as file:
+                #print("{}",file=file)
+                #file.close()
         if token:
             self.token=token
 
@@ -46,42 +46,38 @@ class MefrpClient:
 
 
         if method=="chenge":
-            with (open(os.path.join(os.getcwd()+"\\config","global.json")),"r") as file:
+            with (open(os.path.join(os.getcwd()+"\\config","global.json")),"rb") as file:
                 old_data=json.loads(file.read(7500))
                 print(old_data)
 
             for key,val in data:
                 old_data[key]=val
 
-            with (open(os.path.join(os.getcwd()+"\\config","global.json")),"w") as file:
+            with (open(os.path.join(os.getcwd()+"\\config","global.json")),"wb+") as file:
                 file.write(str(old_data))
 
         elif method=="rewrite":
-            with (open(os.path.join(os.getcwd()+"\\config","global.json")),"w") as file:
+            with (open(os.path.join(os.getcwd()+"\\config","global.json")),"wb+") as file:
                 file.write(str(data))
 
         else:
-            return("\'method\'must be \'chenge\' or\'rewrite\'")
+            return "\'method\'must be \'chenge\' or\'rewrite\'"
 
-
-    def save_data_pickle(self,data:dict):
+    # noinspection PyTypeChecker
+    def save_data_pickle(self,data:dict,method:str="chenge"):
         if method=="chenge":
-            old_data=pickle.trt()
+            old_data=pickle.load(open(os.path.join(os.getcwd()+"\\config","global.json"),"rb+"))
 
             for key,val in data.items():
                 old_data[key]=val
-
-            with (open(os.path.join(os.getcwd()+"\\config","global.json")),"w") as file:
-                file.write(str(old_data))
-                file.close()
+            with open(os.path.join(os.getcwd()+"\\config","global.json"),"wb+") as file:
+                pickle.dump(data, file)
 
         elif method=="rewrite":
-            with (open(os.path.join(os.getcwd()+"\\config","global.json")),"w") as file:
-                file.write(str(data))
-                file.close()
-
+            with open(os.path.join(os.getcwd()+"\\config","global.json"),"wb+") as file:
+                pickle.dump(data, file)
         else:
-            return("\'method\'must be \'chenge\' or\'rewrite\'")
+            return "\'method\'must be \'chenge\' or\'rewrite\'"
         
 
 
@@ -90,10 +86,7 @@ class MefrpClient:
     def read_data(self):
         #用于读取已经写好的配置文件，
         #json返回
-        with (open(os.path.join(os.getcwd()+"\\config","global.json")),"r") as file:
-                data=json.loads(file.read(7500))
-                file.close()
-        return data
+        return pickle.load(open(os.path.join(os.getcwd()+"\\config","global.json"),"rb+"))
 
     
     def get_info(self,token:str=""):
@@ -317,38 +310,3 @@ class MefrpClient:
         
         response=requests.post("https://api.mefrp.com/api/auth/proxy/toggle",headers=header,json=data)
         return json.loads(response.text)
-
-        
-        
-r=MefrpClient(token="69991d99163647d686d79f7b6aab3fa9")
-#print(r.toggle_proxy(64887,is_enable=True))
-#print(r.update_proxy({"proxyId":64887,"loacalIp":"127.0.0.1","localPort":53244,"nodeId":73,"proxyName":"sbb","proxyType":"tcp","remotePort":23314,"useCompression":False,"useEncryption":False}))
-print(r.list_domain())
-'''
-print(r.login(username="Archers",password="zqa#20120623"))
-print("================================================")
-print(r.update_proxy({"proxyId":64887,"loacalIp":"127.0.0.1","localPort":53244,"nodeId":73,"proxyName":"sbb","proxyType":"tcp","remotePort":23314,"useCompression":False,"useEncryption":False}))
-
-r.add_proxy({"loacalIp":"127.0.0.1","localPort":25565,"nodeId":73,"proxyName":"test","proxyType":"tcp","remotePort":23314,"useCompression":False,"useEncryption":False})
-time.sleep(1)
-print(r.get_info())
-print("================================================")
-time.sleep(1)
-print(r.get_ad())
-print("================================================")
-time.sleep(1)
-print(r.get_notice())
-print("================================================")
-time.sleep(1)
-print(r.sign())
-print("================================================")
-time.sleep(1)
-print(r.proxy_list())
-print("================================================")
-time.sleep(1)
-print(r.add_domain("mcfriends666.com"))
-
-#print(r.get_free_port(NodeId=67,protocol="tcp")) 
-#r.save_data({"token":"7403cad4f502861277744a2d5215a98f"},"chenge")
-'''
-           
